@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import java.util.concurrent.TimeUnit
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private var startTime = 0.0
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private var handler : Handler = Handler()
     private lateinit var mediaPlayer : MediaPlayer
     private lateinit var timeText : TextView
+    private lateinit var songLength : TextView
     private lateinit var seekBar: SeekBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         val titleText = findViewById<TextView>(R.id.song_title)
         timeText = findViewById(R.id.time_left_text)
+        songLength = findViewById(R.id.song_length)
         seekBar = findViewById(R.id.seek_bar)
 
         mediaPlayer = MediaPlayer.create(
@@ -59,6 +62,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             timeText.text = startTime.toString()
+            songLength.text = buildString {
+                append(
+                    String.format(
+                        "%d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(finalTime.toLong()),
+                        TimeUnit.MILLISECONDS.toSeconds(finalTime.toLong()) % 60
+                    )
+                )
+            }
             seekBar.progress = startTime.toInt()
 
             handler.postDelayed(updateSongTime, 100)
