@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
@@ -32,10 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val playButton = findViewById<Button>(R.id.play_button)
         val pauseButton = findViewById<Button>(R.id.pause_button)
-        val rewindButton = findViewById<Button>(R.id.rewind_button)
-        val forwardButton = findViewById<Button>(R.id.forward_button)
 
         val titleText = findViewById<TextView>(R.id.song_title)
         timeText = findViewById(R.id.time_left_text)
@@ -50,68 +48,75 @@ class MainActivity : AppCompatActivity() {
         pauseButton.isVisible = false
         seekBar.isClickable = false
 
-
-        playButton.setOnClickListener{
-            mediaPlayer.start()
-            finalTime = mediaPlayer.duration.toDouble()
-            startTime = mediaPlayer.currentPosition.toDouble()
-
-            if(oneTimeOnly == 0){
-                seekBar.max = finalTime.toInt()
-                oneTimeOnly = 1
-            }
-
-            timeText.text = startTime.toString()
-            songLength.text = buildString {
-                append(
-                    String.format(
-                        "%d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(finalTime.toLong()),
-                        TimeUnit.MILLISECONDS.toSeconds(finalTime.toLong()) % 60
-                    )
-                )
-            }
-            seekBar.progress = startTime.toInt()
-
-            handler.postDelayed(updateSongTime, 100)
-            playButton.isVisible = false
-            pauseButton.isVisible = true
-        }
-
         titleText.text= resources.getResourceEntryName(R.raw.take_over)
 
-        pauseButton.setOnClickListener{
-            mediaPlayer.pause()
-            pauseButton.isVisible = false
-            playButton.isVisible = true
+        handler.postDelayed(updateSongTime, 100)
+    }
+
+    public fun playMusic(view: View){
+        view as Button
+        mediaPlayer.start()
+        finalTime = mediaPlayer.duration.toDouble()
+        startTime = mediaPlayer.currentPosition.toDouble()
+
+        if(oneTimeOnly == 0){
+            seekBar.max = finalTime.toInt()
+            oneTimeOnly = 1
         }
 
-        forwardButton.setOnClickListener{
-            val temp = startTime
-            if((temp + forwardTime)<= finalTime){
-                startTime += forwardTime
-                mediaPlayer.seekTo(startTime.toInt())
-            }else{
-                Toast.makeText(
-                    this,
-                    "Cannot Jump Further than Song Length",
-                    Toast.LENGTH_LONG).show()
-            }
+        timeText.text = startTime.toString()
+        songLength.text = buildString {
+            append(
+                String.format(
+                    "%d:%02d",
+                    TimeUnit.MILLISECONDS.toMinutes(finalTime.toLong()),
+                    TimeUnit.MILLISECONDS.toSeconds(finalTime.toLong()) % 60
+                )
+            )
         }
-        rewindButton.setOnClickListener{
-            val temp = startTime.toInt()
-            if((temp - rewindTime)>0){
-                startTime -= rewindTime
-                mediaPlayer.seekTo(startTime.toInt())
-            }else{
-                Toast.makeText(
-                    this,
-                    "Cannot Jump to Before Song Started",
-                    Toast.LENGTH_LONG).show()
-            }
-        }
+        seekBar.progress = startTime.toInt()
 
         handler.postDelayed(updateSongTime, 100)
+        val playButton : Button  = findViewById(R.id.play_button)
+        playButton.isVisible = false
+        val pauseButton : Button = findViewById(R.id.pause_button)
+        pauseButton.isVisible = true
+    }
+    public fun pauseMusic(view: View){
+        view as Button
+        mediaPlayer.pause()
+
+        val pauseButton : Button = findViewById(R.id.pause_button)
+        pauseButton.isVisible = false
+
+        val playButton : Button = findViewById(R.id.play_button)
+        playButton.isVisible = true
+    }
+    public fun forwardMusic(view: View){
+        view as Button
+        val temp = startTime
+        if((temp + forwardTime)<= finalTime){
+            startTime += forwardTime
+            mediaPlayer.seekTo(startTime.toInt())
+        }else{
+            Toast.makeText(
+                this,
+                "Cannot Jump Further than Song Length",
+                Toast.LENGTH_LONG).show()
+        }
+    }
+    public fun rewindMusic(view : View){
+        view as Button
+        val temp = startTime.toInt()
+        if((temp - rewindTime)>0){
+            startTime -= rewindTime
+            mediaPlayer.seekTo(startTime.toInt())
+        }else{
+            Toast.makeText(
+                this,
+                "Cannot Jump to Before Song Started",
+                Toast.LENGTH_LONG).show()
+        }
     }
 
     private val updateSongTime : Runnable = object : Runnable {
