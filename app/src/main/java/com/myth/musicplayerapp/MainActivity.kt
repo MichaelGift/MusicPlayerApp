@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
             tab,position ->
             tab.icon = ContextCompat.getDrawable(this, iconSet[position].activeTabIcon)
         }.attach()
+
+        tabLayout.getTabAt(1)?.select()
     }
 
     private fun generateViewIcon():ArrayList<TabIconData>{

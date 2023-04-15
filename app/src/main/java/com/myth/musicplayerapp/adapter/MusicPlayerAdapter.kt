@@ -18,7 +18,8 @@ class MusicPlayerAdapter(fragmentManager : FragmentManager, lifecycle: Lifecycle
         when(position){
             0 -> return QueueFragment()
             2 -> return LibraryFragment()
+            else -> return PlayerFragment()
         }
-        return PlayerFragment()
+
     }
 }
