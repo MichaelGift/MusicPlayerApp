@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 
 class PlayerFragment : Fragment() {
 
+    var isPlaying : Boolean = false
     private var startTime = 0.0
     private var finalTime = 0.0
     private var forwardTime = 10000
@@ -29,14 +30,35 @@ class PlayerFragment : Fragment() {
     private lateinit var timeText : TextView
     private lateinit var songLength : TextView
     private lateinit var seekBar: SeekBar
-
+    lateinit var playButton: Button
+    lateinit var pauseButton: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view  = inflater.inflate(R.layout.fragment_player, container, false)
-        val pauseButton = view.findViewById<Button>(R.id.pause_button)
+
+        pauseButton = view.findViewById(R.id.pause_button)
+        pauseButton.setOnClickListener{
+            pauseMusic(it)
+        }
+
+        playButton= view.findViewById(R.id.play_button)
+        playButton.setOnClickListener{
+            playMusic(it)
+        }
+
+        val rewindButton : Button = view.findViewById(R.id.rewind_button)
+        rewindButton.setOnClickListener{
+            rewindMusic(it)
+        }
+
+        val forwardButton: Button = view.findViewById(R.id.forward_button)
+        forwardButton.setOnClickListener{
+            forwardMusic(it)
+        }
+
 
         val titleText = view.findViewById<TextView>(R.id.song_title)
         timeText = view.findViewById(R.id.time_left_text)
@@ -57,7 +79,7 @@ class PlayerFragment : Fragment() {
 
         return view
     }
-    public fun playMusic(view: View){
+    private fun playMusic(view: View){
         view as Button
         mediaPlayer.start()
         finalTime = mediaPlayer.duration.toDouble()
@@ -81,22 +103,14 @@ class PlayerFragment : Fragment() {
         seekBar.progress = startTime.toInt()
 
         handler.postDelayed(updateSongTime, 100)
-        val playButton : Button  = view.findViewById(R.id.play_button)
-        playButton.isVisible = false
-        val pauseButton : Button = view.findViewById(R.id.pause_button)
-        pauseButton.isVisible = true
+        isPlaying = true
     }
-    public fun pauseMusic(view: View){
+    private fun pauseMusic(view: View){
         view as Button
         mediaPlayer.pause()
-
-        val pauseButton : Button = view.findViewById(R.id.pause_button)
-        pauseButton.isVisible = false
-
-        val playButton : Button = view.findViewById(R.id.play_button)
-        playButton.isVisible = true
+        isPlaying = false
     }
-    public fun forwardMusic(view: View){
+    private fun forwardMusic(view: View){
         view as Button
         val temp = startTime
         if((temp + forwardTime)<= finalTime){
@@ -109,7 +123,7 @@ class PlayerFragment : Fragment() {
                 Toast.LENGTH_LONG).show()
         }
     }
-    public fun rewindMusic(view : View){
+    private fun rewindMusic(view : View){
         view as Button
         val temp = startTime.toInt()
         if((temp - rewindTime)>0){
@@ -139,8 +153,15 @@ class PlayerFragment : Fragment() {
             } catch (e: Exception) {
                 Log.e("MainActivity", "Error updating timer text: ${e.message}")
             }
-
             seekBar.progress = startTime.toInt()
+            if(!isPlaying){
+                playButton.isVisible = true
+                pauseButton.isVisible = false
+            }
+            else{
+                playButton.isVisible = false
+                pauseButton.isVisible = true
+            }
             handler.postDelayed(this, 100)
         }
     }
