@@ -17,7 +17,7 @@ class MusicPlayerAdapter(fragmentManager : FragmentManager, lifecycle: Lifecycle
     override fun createFragment(position: Int): Fragment {
         when(position){
             0 -> return QueueFragment()
-            1-> return LibraryFragment()
+            2 -> return LibraryFragment()
         }
         return PlayerFragment()
     }
