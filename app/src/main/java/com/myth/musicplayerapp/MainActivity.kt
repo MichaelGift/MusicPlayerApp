@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
-
     private var startTime = 0.0
     private var finalTime = 0.0
     private var forwardTime = 10000
