@@ -16,6 +16,7 @@ import androidx.core.view.isVisible
 import com.myth.musicplayerapp.R
 import java.util.concurrent.TimeUnit
 
+@Suppress("DEPRECATION")
 class PlayerFragment : Fragment() {
 
     var isPlaying : Boolean = false

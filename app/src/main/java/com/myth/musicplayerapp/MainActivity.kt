@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.Tab
 import com.google.android.material.tabs.TabLayoutMediator
 import com.myth.musicplayerapp.adapter.MusicPlayerAdapter
 import com.myth.musicplayerapp.models.TabIconData
@@ -34,12 +33,12 @@ class MainActivity : AppCompatActivity() {
         }.attach()
     }
 
-    fun generateViewIcon():ArrayList<TabIconData>{
-        var icons = ArrayList<TabIconData>()
+    private fun generateViewIcon():ArrayList<TabIconData>{
+        val icons = ArrayList<TabIconData>()
 
-        var playMusic = TabIconData(R.drawable.play_icon)
-        var queueIcon = TabIconData(R.drawable.back_icon)
-        var libraryIcon = TabIconData(R.drawable.forward_icon)
+        val playMusic = TabIconData(R.drawable.musicplayicon)
+        val queueIcon = TabIconData(R.drawable.musicqueueicon)
+        val libraryIcon = TabIconData(R.drawable.musiclibraryicon)
 
 
         icons.add(queueIcon)
