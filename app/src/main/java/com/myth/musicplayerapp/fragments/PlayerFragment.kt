@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.myth.musicplayerapp.R
 import com.myth.musicplayerapp.databinding.FragmentPlayerBinding
+import com.myth.musicplayerapp.viewmodels.PlayerFragmentViewModel
 import java.util.concurrent.TimeUnit
 
 @Suppress("DEPRECATION")
@@ -29,6 +31,7 @@ class PlayerFragment : Fragment() {
     private lateinit var mediaPlayer: MediaPlayer
 
     private lateinit var binding: FragmentPlayerBinding
+    private lateinit var viewModel: PlayerFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +43,11 @@ class PlayerFragment : Fragment() {
             container,
             false
         )
+
+        viewModel = ViewModelProvider(this)[PlayerFragmentViewModel::class.java]
+
+        binding.lifecycleOwner = this
+        binding.playerfragmentViewModel = viewModel
 
         binding.apply {
 
@@ -67,7 +75,7 @@ class PlayerFragment : Fragment() {
                 R.raw.take_over
             )
 
-            textView.text = resources.getResourceEntryName(R.raw.take_over)
+            songTitle.text = resources.getResourceEntryName(R.raw.take_over)
         }
 
         handler.postDelayed(updateSongTime, 100)

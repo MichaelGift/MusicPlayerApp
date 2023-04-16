@@ -2,4 +2,11 @@
     <string name="app_name">BeatHub</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forward">Forward</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="_00_00">00:00</string>
+    <string name="song_title">Song Title</string>
+    <string name="music_app_icon">Music App Icon</string>
+    <string name="rewind">Rewind</string>
 </resources>
