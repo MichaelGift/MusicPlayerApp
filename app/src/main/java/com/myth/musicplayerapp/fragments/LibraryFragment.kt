@@ -56,6 +56,6 @@ class LibraryFragment : Fragment() {
     }
 
     private fun listItemClicked(selectedItem: Music) {
-        playerFragment.playSelectedMusic(selectedItem)
+        this.context?.let { playerFragment.playSelectedMusic(selectedItem, it) }
     }
 }

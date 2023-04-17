@@ -1,5 +1,6 @@
 package com.myth.musicplayerapp.fragments
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -82,12 +83,12 @@ class PlayerFragment : Fragment() {
         return binding.root
     }
 
-    fun playSelectedMusic(music: Music){
+    fun playSelectedMusic(music: Music, context: Context){
         mediaPlayer = MediaPlayer.create(
-            this.context,
+            context,
             music.contentUri
         )
-        playMusic()
+        mediaPlayer.start()
     }
 
     private fun playMusic() {
