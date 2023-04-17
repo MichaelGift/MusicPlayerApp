@@ -1,6 +1,7 @@
 package com.myth.musicplayerapp.fragments
 
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.myth.musicplayerapp.R
 import com.myth.musicplayerapp.databinding.FragmentPlayerBinding
+import com.myth.musicplayerapp.room.Music
 import com.myth.musicplayerapp.viewmodels.PlayerFragmentViewModel
 import java.util.concurrent.TimeUnit
 
@@ -70,10 +72,7 @@ class PlayerFragment : Fragment() {
             pauseButton.isVisible = false
             seekBar.isClickable = false
 
-            mediaPlayer = MediaPlayer.create(
-                context,
-                R.raw.take_over
-            )
+            mediaPlayer = MediaPlayer()
 
             songTitle.text = resources.getResourceEntryName(R.raw.take_over)
         }
@@ -83,6 +82,13 @@ class PlayerFragment : Fragment() {
         return binding.root
     }
 
+    fun playSelectedMusic(music: Music){
+        mediaPlayer = MediaPlayer.create(
+            this.context,
+            music.contentUri
+        )
+        playMusic()
+    }
 
     private fun playMusic() {
 

@@ -14,5 +14,10 @@ class PlayerFragmentViewModel : ViewModel() {
 
     private lateinit var mediaPlayer: MediaPlayer
 
-
+    fun playMusic() {}
+    fun pauseMusic() {}
+    fun rewindMusic() {}
+    fun forwardMusic() {}
+    fun nextSong() {}
+    fun previousSong() {}
 }
