@@ -3,7 +3,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    
+
+    <data>
+        <variable
+            name="songViewModel"
+            type="com.myth.musicplayerapp.viewmodel.SongViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,52 +39,58 @@
             app:layout_constraintEnd_toEndOf="@+id/seek_bar"
             app:layout_constraintStart_toStartOf="@+id/seek_bar" />
 
-        <Button
+        <ImageButton
+            android:onClick="@{()->songViewModel.rewindSong()}"
             android:id="@+id/rewind_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginStart="104dp"
+            android:layout_marginStart="76dp"
             android:layout_marginBottom="16dp"
-            android:drawableStart="@drawable/back_icon"
-            android:gravity="center|center_horizontal"
             android:contentDescription="@string/rewind"
+            android:gravity="center|center_horizontal"
+            android:src="@drawable/back_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <ImageButton
+            android:onClick="@{()->songViewModel.forwardSong()}"
             android:id="@+id/forward_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="104dp"
-            android:drawableStart="@drawable/forward_icon"
-            android:gravity="center|center_horizontal"
+            android:layout_marginEnd="92dp"
+            android:layout_marginBottom="16dp"
             android:contentDescription="@string/forward"
-            app:layout_constraintBaseline_toBaselineOf="@+id/play_button"
+            android:gravity="center|center_horizontal"
+            android:src="@drawable/forward_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
+        <ImageButton
             android:id="@+id/pause_button"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:drawableStart="@drawable/pause_icon"
-            android:gravity="center|center_horizontal"
+            android:layout_marginBottom="16dp"
             android:contentDescription="@string/pause"
-            app:layout_constraintBaseline_toBaselineOf="@+id/play_button"
+            android:gravity="center|center_horizontal"
+            android:src="@drawable/pause_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="DuplicateClickableBoundsCheck" />
 
-        <Button
+        <ImageButton
             android:id="@+id/play_button"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_marginBottom="16dp"
             android:contentDescription="@string/play"
-            android:drawableStart="@drawable/play_icon"
             android:drawablePadding="24dp"
             android:gravity="center|center_horizontal"
-            app:layout_constraintBaseline_toBaselineOf="@+id/rewind_button"
-            app:layout_constraintEnd_toEndOf="@+id/pause_button"
-            app:layout_constraintStart_toStartOf="@+id/pause_button" />
+            android:src="@drawable/play_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <SeekBar
             android:id="@+id/seek_bar"

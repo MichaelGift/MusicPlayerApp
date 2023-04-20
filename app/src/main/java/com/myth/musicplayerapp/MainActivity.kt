@@ -4,15 +4,23 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
+import com.myth.musicplayerapp.database.DeviceSongDao
+import com.myth.musicplayerapp.database.SongDatabase
 import com.myth.musicplayerapp.viewpageradapter.MusicPlayerViewPagerAdapter
 import com.myth.musicplayerapp.databinding.ActivityMainBinding
 import com.myth.musicplayerapp.models.TabIconData
+import com.myth.musicplayerapp.repository.SongRepository
+import com.myth.musicplayerapp.viewmodel.SongViewModel
+import com.myth.musicplayerapp.viewmodel.SongViewModelFactory
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    lateinit var songViewModel: SongViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
             tabViewNav.getTabAt(1)?.select()
         }
+        setUpViewModel()
     }
 
     private fun generateViewIcon(): ArrayList<TabIconData> {
@@ -51,5 +60,12 @@ class MainActivity : AppCompatActivity() {
         icons.add(libraryIcon)
 
         return icons
+    }
+    fun setUpViewModel(){
+        val songRepository = SongRepository(SongDatabase(this),this.application, DeviceSongDao())
+        val viewModelProviderFactory = SongViewModelFactory(application, songRepository)
+        songViewModel = ViewModelProvider(
+            this, viewModelProviderFactory
+        )[SongViewModel::class.java]
     }
 }

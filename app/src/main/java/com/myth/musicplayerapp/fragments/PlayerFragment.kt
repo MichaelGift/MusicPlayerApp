@@ -43,19 +43,15 @@ class PlayerFragment : Fragment() {
         binding.apply {
 
             playButton.setOnClickListener {
-                playMusic()
             }
 
             pauseButton.setOnClickListener {
-                pauseMusic()
             }
 
             rewindButton.setOnClickListener {
-                rewindMusic()
             }
 
             forwardButton.setOnClickListener {
-                forwardMusic()
             }
 
             pauseButton.isVisible = false
