@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayoutMediator
-import com.myth.musicplayerapp.adapter.MusicPlayerAdapter
+import com.myth.musicplayerapp.viewpageradapter.MusicPlayerViewPagerAdapter
 import com.myth.musicplayerapp.databinding.ActivityMainBinding
 import com.myth.musicplayerapp.models.TabIconData
 
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val musicViewAdapter = MusicPlayerAdapter(
+        val musicViewAdapter = MusicPlayerViewPagerAdapter(
             supportFragmentManager,
             lifecycle
         )

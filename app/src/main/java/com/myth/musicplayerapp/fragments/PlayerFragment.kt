@@ -1,8 +1,6 @@
 package com.myth.musicplayerapp.fragments
 
-import android.content.Context
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -12,11 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.myth.musicplayerapp.R
 import com.myth.musicplayerapp.databinding.FragmentPlayerBinding
-import com.myth.musicplayerapp.room.Music
-import com.myth.musicplayerapp.viewmodels.PlayerFragmentViewModel
 import java.util.concurrent.TimeUnit
 
 @Suppress("DEPRECATION")
@@ -34,7 +29,6 @@ class PlayerFragment : Fragment() {
     private lateinit var mediaPlayer: MediaPlayer
 
     private lateinit var binding: FragmentPlayerBinding
-    private lateinit var viewModel: PlayerFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,12 +40,6 @@ class PlayerFragment : Fragment() {
             container,
             false
         )
-
-        viewModel = ViewModelProvider(this)[PlayerFragmentViewModel::class.java]
-
-        binding.lifecycleOwner = this
-        binding.playerfragmentViewModel = viewModel
-
         binding.apply {
 
             playButton.setOnClickListener {
@@ -81,14 +69,6 @@ class PlayerFragment : Fragment() {
         handler.postDelayed(updateSongTime, 100)
 
         return binding.root
-    }
-
-    fun playSelectedMusic(music: Music, context: Context){
-        mediaPlayer = MediaPlayer.create(
-            context,
-            music.contentUri
-        )
-        mediaPlayer.start()
     }
 
     private fun playMusic() {

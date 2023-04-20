@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.adapter
+package com.myth.musicplayerapp.viewpageradapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -8,7 +8,7 @@ import com.myth.musicplayerapp.fragments.LibraryFragment
 import com.myth.musicplayerapp.fragments.PlayerFragment
 import com.myth.musicplayerapp.fragments.QueueFragment
 
-class MusicPlayerAdapter(fragmentManager : FragmentManager, lifecycle: Lifecycle) :
+class MusicPlayerViewPagerAdapter(fragmentManager : FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
         return 3
