@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.myth.musicplayerapp.MainActivity
 import com.myth.musicplayerapp.adapter.SongAdapter
 import com.myth.musicplayerapp.databinding.FragmentLibraryBinding
-import com.myth.musicplayerapp.databinding.FragmentPlayerBinding
 import com.myth.musicplayerapp.viewmodel.SongViewModel
 
 class LibraryFragment : Fragment() {
@@ -34,7 +33,8 @@ class LibraryFragment : Fragment() {
         songViewModel = (activity as MainActivity).songViewModel
         setUpRecyclerView()
     }
-    private fun setUpRecyclerView(){
+
+    private fun setUpRecyclerView() {
         songAdapter = SongAdapter(activity as MainActivity)
 
         binding?.libraryRecyclerView?.apply {
@@ -47,11 +47,11 @@ class LibraryFragment : Fragment() {
 
 
         songViewModel.getAllSongsOnDevice()
-        println("You have ${songViewModel.songsOnDevice.value} songs")
-        activity?.let{
+        println("You have ${songViewModel.songsOnDevice.value?.size} songs")
+        activity?.let {
             songViewModel.songsOnDevice.observe(
                 viewLifecycleOwner
-            ){song->
+            ) { song ->
                 songAdapter.differ.submitList(song)
             }
         }

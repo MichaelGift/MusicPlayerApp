@@ -54,7 +54,7 @@ class SongAdapter(val activity: MainActivity) : RecyclerView.Adapter<SongAdapter
                 Toast.LENGTH_LONG
             ).show()
             songViewModel = (activity as MainActivity).songViewModel
-            songViewModel.playSong(currentSong)
+            songViewModel.playSelectedSong(currentSong)
         }
     }
 
