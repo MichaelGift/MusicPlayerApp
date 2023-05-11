@@ -6,3 +6,5 @@ A simple music player that plays mp3 files in the raw folder in the resources di
 - Changing from the default mediaplayer to exoplayer - 14/5/2023
 - Complete the missing UI
 - Include playlist creation
+- Share Music Files and Playlist
+
