@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.fragments
+package com.myth.musicplayerapp.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.myth.musicplayerapp.MainActivity
-import com.myth.musicplayerapp.adapter.SongAdapter
+import com.myth.musicplayerapp.presentation.adapter.SongAdapter
 import com.myth.musicplayerapp.databinding.FragmentLibraryBinding
-import com.myth.musicplayerapp.viewmodel.SongViewModel
+import com.myth.musicplayerapp.presentation.viewmodel.SongViewModel
 
 class LibraryFragment : Fragment() {
 

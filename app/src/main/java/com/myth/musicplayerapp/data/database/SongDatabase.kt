@@ -1,10 +1,10 @@
-package com.myth.musicplayerapp.database
+package com.myth.musicplayerapp.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.myth.musicplayerapp.models.Song
+import com.myth.musicplayerapp.data.models.Song
 
 
 @Database(entities = [Song::class], version = 1)

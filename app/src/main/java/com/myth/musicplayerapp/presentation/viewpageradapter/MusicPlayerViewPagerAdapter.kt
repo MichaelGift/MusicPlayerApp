@@ -1,12 +1,12 @@
-package com.myth.musicplayerapp.viewpageradapter
+package com.myth.musicplayerapp.presentation.viewpageradapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.myth.musicplayerapp.fragments.LibraryFragment
-import com.myth.musicplayerapp.fragments.PlayerFragment
-import com.myth.musicplayerapp.fragments.QueueFragment
+import com.myth.musicplayerapp.presentation.fragments.LibraryFragment
+import com.myth.musicplayerapp.presentation.fragments.PlayerFragment
+import com.myth.musicplayerapp.presentation.fragments.QueueFragment
 
 class MusicPlayerViewPagerAdapter(fragmentManager : FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {

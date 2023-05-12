@@ -1,19 +1,28 @@
 package com.myth.musicplayerapp.repository
 
-import android.app.Application
-import com.myth.musicplayerapp.MainActivity
-import com.myth.musicplayerapp.database.DeviceSongDao
-import com.myth.musicplayerapp.database.SongDatabase
-import com.myth.musicplayerapp.models.Song
+import com.myth.musicplayerapp.data.database.SongDatabase
+import com.myth.musicplayerapp.data.models.Song
+import kotlinx.coroutines.flow.Flow
 
-class SongRepository(private val db: SongDatabase, val app: Application, val deviceSongDao: DeviceSongDao) {
+class SongRepository(private val db: SongDatabase) {
 
-    val songLiveData  = deviceSongDao.songLiveData
+    suspend fun isTableEmpty(): Boolean {
+        val count = db.getSongDao().rowCount()
+        return count == 0
+    }
 
+    suspend fun clearPlaylistSongs(playlistName: String) =
+        db.getSongDao().clearPlaylistSongs(playlistName)
+
+    fun getPlaylistSongs(playlistName: String): Flow<List<Song>> =
+        db.getSongDao().getPlaylistSongs(playlistName)
+
+    fun getAllSongs(): Flow<List<Song>> = db.getSongDao().getAllSongs()
+    fun getAllFavoriteSongs(): Flow<List<Song>> = db.getSongDao().getAllFavoriteSongs()
+    fun getRecentPlayedSongs(limit: Int): Flow<List<Song>> = db.getSongDao().getRecentSongs(limit)
+    suspend fun clearFavorites() = db.getSongDao().clearFavoritesSongs()
+    suspend fun insertSong(song: Song) = db.getSongDao().insertSong(song)
     suspend fun updateSong(song: Song) = db.getSongDao().updateSong(song)
     suspend fun deleteSong(song: Song) = db.getSongDao().deleteSong(song)
-
-    fun getAllSongs() = db.getSongDao().getAllSongs()
-    fun getAllSongsOnDevice() = deviceSongDao.getAllMusicOnDevice(app.applicationContext)
     fun searchSongs(query: String) = db.getSongDao().searchSong(query)
 }

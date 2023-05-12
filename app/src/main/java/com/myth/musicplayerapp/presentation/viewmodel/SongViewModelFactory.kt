@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.viewmodel
+package com.myth.musicplayerapp.presentation.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

@@ -1,5 +1,5 @@
 
-package com.myth.musicplayerapp.fragments
+package com.myth.musicplayerapp.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

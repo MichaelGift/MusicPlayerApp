@@ -9,14 +9,13 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
-import com.myth.musicplayerapp.database.DeviceSongDao
-import com.myth.musicplayerapp.database.SongDatabase
-import com.myth.musicplayerapp.viewpageradapter.MusicPlayerViewPagerAdapter
+import com.myth.musicplayerapp.data.database.SongDatabase
+import com.myth.musicplayerapp.presentation.viewpageradapter.MusicPlayerViewPagerAdapter
 import com.myth.musicplayerapp.databinding.ActivityMainBinding
-import com.myth.musicplayerapp.models.TabIconData
+import com.myth.musicplayerapp.data.models.TabIconData
 import com.myth.musicplayerapp.repository.SongRepository
-import com.myth.musicplayerapp.viewmodel.SongViewModel
-import com.myth.musicplayerapp.viewmodel.SongViewModelFactory
+import com.myth.musicplayerapp.presentation.viewmodel.SongViewModel
+import com.myth.musicplayerapp.presentation.viewmodel.SongViewModelFactory
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {

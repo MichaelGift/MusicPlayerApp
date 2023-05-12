@@ -6,12 +6,12 @@
     <data>
         <variable
             name="songViewModel"
-            type="com.myth.musicplayerapp.viewmodel.SongViewModel" />
+            type="com.myth.musicplayerapp.presentation.viewmodel.SongViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.PlayerFragment">
+        tools:context=".presentation.fragments.PlayerFragment">
 
         <ImageView
             android:id="@+id/imageView"

@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.adapter
+package com.myth.musicplayerapp.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.myth.musicplayerapp.MainActivity
 import com.myth.musicplayerapp.databinding.MusicCardLayoutBinding
-import com.myth.musicplayerapp.models.Song
-import com.myth.musicplayerapp.viewmodel.SongViewModel
+import com.myth.musicplayerapp.data.models.Song
+import com.myth.musicplayerapp.presentation.viewmodel.SongViewModel
 
 class SongAdapter(val activity: MainActivity) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.models
+package com.myth.musicplayerapp.data.models
 
 import android.net.Uri
 import androidx.room.ColumnInfo
@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.myth.musicplayerapp.database.UriTypeConverter
 
-@Entity(tableName = "song_table")
+@Entity(tableName = "songs")
 data class Song(
     @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name = "title") var title: String,
