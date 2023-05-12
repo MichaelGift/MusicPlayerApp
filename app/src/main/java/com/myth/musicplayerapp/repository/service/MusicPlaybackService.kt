@@ -57,9 +57,12 @@ class MusicPlaybackService : Service() {
 
     private fun sendPlayPauseBroadcast() {
         val intent = Intent()
+        intent.action = "android.intent.action.MUSIC_PLAY_PAUSE_STATE_CHANGE"
+        sendBroadcast(intent)
     }
 
     fun playNewMusic(song: Song) {
+        println("${song.title} playing right now")
         try {
             if (currentMusicPlaying != null) {
                 if (currentMusicPlaying!!.audioPath == song.audioPath) return
@@ -72,7 +75,7 @@ class MusicPlaybackService : Service() {
                 player!!.release()
             }
 
-            player = MediaPlayer.create(this, uri)
+            player = MediaPlayer.create(this.applicationContext, uri)
             player!!.isLooping = false
             player!!.start()
 
@@ -119,8 +122,12 @@ class MusicPlaybackService : Service() {
         return if (player == null) 0 else player!!.duration
     }
 
-    fun getMusicSeek(seekTo: Int) {
+    fun setMusicSeek(seekTo: Int) {
         if (player != null) player!!.seekTo(seekTo)
+    }
+
+    fun getMusicSeek() : Int{
+        return if (player != null) player!!.currentPosition else 0
     }
 
     fun setMusicPlaylist(musicPaths: ArrayList<Song>) {

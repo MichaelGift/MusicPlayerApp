@@ -25,7 +25,6 @@ import com.myth.musicplayerapp.presentation.viewpageradapter.MusicPlayerViewPage
 import com.myth.musicplayerapp.repository.SongRepository
 import com.myth.musicplayerapp.repository.service.MusicPlaybackService
 
-@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     private var musicService: MusicPlaybackService? = null
     private lateinit var binding: ActivityMainBinding
@@ -62,7 +61,11 @@ class MainActivity : AppCompatActivity() {
         setUpViewModel()
     }
 
-    fun initialiseListeners() {
+    fun getMusicService(): MusicPlaybackService? {
+        return musicService
+    }
+
+    private fun initialiseListeners() {
 
     }
 
@@ -71,16 +74,13 @@ class MainActivity : AppCompatActivity() {
         stopService(intent)
     }
 
-    fun getMusicService(): MusicPlaybackService? {
-        return musicService
-    }
 
     private val musicChangeStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
 
         }
     }
-    private val musicPlayPauseStateReceiver: BroadcastReceiver = object: BroadcastReceiver(){
+    private val musicPlayPauseStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
 
         }
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-
+            musicService = null
         }
     }
 
@@ -145,7 +145,8 @@ class MainActivity : AppCompatActivity() {
         filter2.addAction("android.intent.action.MUSIC_PLAY_PAUSE_STATE_CHANGE")
         registerReceiver(musicPlayPauseStateReceiver, filter2)
     }
-    private fun stopBroadCastReceiver(){
+
+    private fun stopBroadCastReceiver() {
         unregisterReceiver(musicChangeStateReceiver)
         unregisterReceiver(musicPlayPauseStateReceiver)
 

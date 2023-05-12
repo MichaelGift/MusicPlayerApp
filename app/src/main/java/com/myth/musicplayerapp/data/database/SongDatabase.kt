@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.myth.musicplayerapp.data.models.Song
 
 
-@Database(entities = [Song::class], version = 1)
+@Database(entities = [Song::class], version = 1, exportSchema = false)
 abstract class SongDatabase : RoomDatabase() {
 
     abstract fun getSongDao(): SongDao
