@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val musicPlayPauseStateReceiver: BroadcastReceiver = object: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
-            
+
         }
     }
 
@@ -120,6 +120,10 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder: MusicPlaybackService.MyBinder = service as MusicPlaybackService.MyBinder
             musicService = binder.getService()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+
         }
     }
 
