@@ -47,6 +47,7 @@ class LibraryFragment : Fragment() {
 
 
         songViewModel.getAllSongsOnDevice()
+        /*songViewModel.getAllSongs()*/
         println("You have ${songViewModel.songsOnDevice.value?.size} songs")
         activity?.let {
             songViewModel.songsOnDevice.observe(

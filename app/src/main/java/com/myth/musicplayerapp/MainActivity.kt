@@ -1,6 +1,9 @@
 package com.myth.musicplayerapp
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             viewPager.adapter = musicViewAdapter
             val iconSet = generateViewIcon()
 
-            TabLayoutMediator(tabViewNav, viewPager) { tab, position ->
+            TabLayoutMediator(tabViewNav, viewPager,) { tab, position ->
                 tab.icon =
                     ContextCompat.getDrawable(this@MainActivity, iconSet[position].activeTabIcon)
             }.attach()
@@ -67,5 +70,18 @@ class MainActivity : AppCompatActivity() {
         songViewModel = ViewModelProvider(
             this, viewModelProviderFactory
         )[SongViewModel::class.java]
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onDestroy() {
+        Toast.makeText(applicationContext, "Destroyed", Toast.LENGTH_SHORT).show()
+        super.onDestroy()
+        songViewModel.mediaPlayer?.release()
     }
 }
