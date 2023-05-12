@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.repository
+package com.myth.musicplayerapp.repository.utility
 
 import android.content.Context
 import android.os.Build
@@ -39,7 +39,7 @@ class FileManager {
             sortOrder
         )
 
-        if (cursor != null && cursor.moveToFirst()) {
+        if ((cursor != null) && cursor.moveToFirst()) {
             do {
                 val audioPath =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
@@ -116,4 +116,9 @@ class FileManager {
         }
     }
 
+    fun getFileInternal(context: Context, jsonFileName: String): String {
+        context.openFileInput(jsonFileName).use {
+            return String(it.readBytes())
+        }
+    }
 }

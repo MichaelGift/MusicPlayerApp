@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.repository
+package com.myth.musicplayerapp.repository.utility
 
 enum class PlayType { OneLoop, Shuffle, Linear }
 enum class AppTheme { PINK, SHERPA_BLUE, BLUE, RED }

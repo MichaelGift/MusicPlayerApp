@@ -1,10 +1,11 @@
 package com.myth.musicplayerapp.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.myth.musicplayerapp.data.models.Song
-import com.myth.musicplayerapp.repository.FileManager
-import com.myth.musicplayerapp.repository.SharedPreferencesManager
+import com.myth.musicplayerapp.repository.utility.FileManager
+import com.myth.musicplayerapp.repository.utility.SharedPreferencesManager
 import com.myth.musicplayerapp.repository.SongRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -72,4 +73,18 @@ class SongViewModel(
             callback()
         }
     }
+
+    fun saveAllSongsToDatabase(context: Context, callback: () -> Unit) =
+        viewModelScope.launch(Dispatchers.Default) {
+            val audioFiles = fileManager.getAllAudioFiles(context)
+            val time = System.currentTimeMillis()
+
+            for (song in audioFiles) {
+                song.lastPlayed = time
+                songRepository.insertSong(song)
+            }
+            withContext(Dispatchers.Main) {
+                callback()
+            }
+        }
 }

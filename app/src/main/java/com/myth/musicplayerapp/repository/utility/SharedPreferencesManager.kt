@@ -1,4 +1,4 @@
-package com.myth.musicplayerapp.repository
+package com.myth.musicplayerapp.repository.utility
 
 import android.content.Context
 
@@ -47,7 +47,7 @@ class SharedPreferencesManager {
         selectedTheme = theme
     }
 
-    fun getTheme(context: Context):AppTheme{
+    fun getTheme(context: Context): AppTheme {
         if(selectedTheme != null) return selectedTheme!!
         val sp= context.getSharedPreferences("App Data",Context.MODE_PRIVATE)?: return AppTheme.SHERPA_BLUE
         selectedTheme = sp.getString("app_theme", "SHERPA_BLUE")!!.toAppTheme()
