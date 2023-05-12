@@ -12,11 +12,13 @@ import com.myth.musicplayerapp.databinding.MusicCardLayoutBinding
 import com.myth.musicplayerapp.presentation.viewmodel.SongViewModel
 import com.myth.musicplayerapp.repository.service.MusicPlaybackService
 
-class SongAdapter(private val activity: MainActivity) :
+class SongAdapter(
+    private val activity: MainActivity,
+    private val musicPlaybackService: MusicPlaybackService
+) :
     RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     private lateinit var songViewModel: SongViewModel
-    private var musicService: MusicPlaybackService? = null
 
     class SongViewHolder(val itemBinding: MusicCardLayoutBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
@@ -56,16 +58,8 @@ class SongAdapter(private val activity: MainActivity) :
                 "You chose to play ${currentSong.title}",
                 Toast.LENGTH_LONG
             ).show()
-            songViewModel = activity.songViewModel
-            songViewModel.clearPlaylist()
-            for (songData in differ.currentList) {
-                songViewModel.addPlaylistItem(songData)
-            }
-            songViewModel.selectedSong = currentSong
-            songViewModel.openedPlaylistName = "Recent"
 
-            musicService = activity.getMusicService()
-            musicService?.playNewMusic(currentSong)
+            musicPlaybackService.playNewMusic(currentSong)
         }
     }
 

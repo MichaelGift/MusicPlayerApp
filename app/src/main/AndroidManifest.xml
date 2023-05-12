@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,6 +28,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <service
+            android:name=".repository.service.MusicPlaybackService"
+            android:foregroundServiceType="mediaPlayback" />
     </application>
 
 </manifest>

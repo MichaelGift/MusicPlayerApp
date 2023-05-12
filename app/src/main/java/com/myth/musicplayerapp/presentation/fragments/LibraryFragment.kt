@@ -1,6 +1,7 @@
 package com.myth.musicplayerapp.presentation.fragments
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.myth.musicplayerapp.MainActivity
 import com.myth.musicplayerapp.databinding.FragmentLibraryBinding
 import com.myth.musicplayerapp.presentation.adapter.SongAdapter
 import com.myth.musicplayerapp.presentation.viewmodel.SongViewModel
+import com.myth.musicplayerapp.repository.service.MusicPlaybackService
 import kotlinx.coroutines.launch
 
 class LibraryFragment : Fragment() {
@@ -25,6 +27,13 @@ class LibraryFragment : Fragment() {
 
     private lateinit var songViewModel: SongViewModel
     private lateinit var songAdapter: SongAdapter
+    private lateinit var musicPlaybackService: MusicPlaybackService
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MainActivity) {
+            musicPlaybackService = context.getMusicService()!!
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +57,7 @@ class LibraryFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        songAdapter = SongAdapter(activity as MainActivity)
+        songAdapter = SongAdapter((activity as MainActivity), musicPlaybackService)
 
         binding?.libraryRecyclerView?.apply {
             layoutManager = LinearLayoutManager(
