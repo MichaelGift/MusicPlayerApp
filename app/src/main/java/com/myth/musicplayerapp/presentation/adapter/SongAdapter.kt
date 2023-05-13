@@ -2,7 +2,6 @@ package com.myth.musicplayerapp.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,13 +9,10 @@ import com.myth.musicplayerapp.MainActivity
 import com.myth.musicplayerapp.data.models.Song
 import com.myth.musicplayerapp.databinding.MusicCardLayoutBinding
 import com.myth.musicplayerapp.presentation.viewmodel.SongViewModel
-import com.myth.musicplayerapp.repository.service.MusicPlaybackService
 
 class SongAdapter(
-    private val activity: MainActivity,
-    private val musicPlaybackService: MusicPlaybackService
-) :
-    RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
+    private val activity: MainActivity
+) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     private lateinit var songViewModel: SongViewModel
 
@@ -29,9 +25,7 @@ class SongAdapter(
         }
 
         override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return oldItem.id == newItem.id
-                    && oldItem.title == newItem.title
-                    && oldItem.albumId == newItem.albumId
+            return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.albumId == newItem.albumId
         }
     }
     val differ = AsyncListDiffer(this, differCallback)
@@ -50,16 +44,34 @@ class SongAdapter(
 
         holder.itemBinding.musicTitleText.text = currentSong.title
         holder.itemBinding.musicArtistText.text = currentSong.artist
-        holder.itemBinding.musicAlbumText.text = currentSong.albumId.toString()
+        /*holder.itemBinding.musicAlbumText.text = currentSong.albumId.toString()*/
 
         holder.itemView.setOnClickListener {
-            Toast.makeText(
-                holder.itemView.context,
-                "You chose to play ${currentSong.title}",
-                Toast.LENGTH_LONG
-            ).show()
+            //Reference the view model, though this method seems a bit crude
+            songViewModel = activity.songViewModel
 
-            musicPlaybackService.playNewMusic(currentSong)
+            //clear the playlist
+            songViewModel.clearPlaylist()
+
+            //add all songs in the currentlist to a new playlist
+            for (songData in differ.currentList) {
+                songViewModel.addPlaylistItem(songData)
+            }
+
+            // set this specifics song as the current song
+            songViewModel.selectedSong = currentSong
+
+            //create a playlist called "library" since this is a list of songs from the storage
+            songViewModel.openedPlaylistName = "Library"
+
+            //get a reference to the playback service
+            val musicPlaybackService = activity.getMusicService()
+
+            //Make the service play the current song, this selected song
+            musicPlaybackService?.playNewMusic(currentSong)
+            musicPlaybackService?.setMusicPlaylist(songViewModel.playlistAllSongs)
+            //Debug checks
+            /*println("Playlist ${songViewModel.openedPlaylistName.toString()} has ${songViewModel.playlistAllSongs.size} songs")*/
         }
     }
 

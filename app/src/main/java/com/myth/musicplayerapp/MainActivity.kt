@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         initialiseListeners()
 
         val musicViewAdapter = MusicPlayerViewPagerAdapter(
-            supportFragmentManager, lifecycle
+            supportFragmentManager, lifecycle, this
         )
 
         binding.apply {

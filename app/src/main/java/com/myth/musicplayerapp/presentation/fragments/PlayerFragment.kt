@@ -1,35 +1,30 @@
 package com.myth.musicplayerapp.presentation.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.myth.musicplayerapp.MainActivity
 import com.myth.musicplayerapp.databinding.FragmentPlayerBinding
 import com.myth.musicplayerapp.presentation.viewmodel.SongViewModel
-import com.myth.musicplayerapp.repository.service.MusicPlaybackService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
-class PlayerFragment : Fragment() {
+class PlayerFragment(private val activity: MainActivity) : Fragment() {
 
     private lateinit var binding: FragmentPlayerBinding
     private var isTrackSeekingAllowed = true
     private var songJob: Job? = null
-    private var musicService: MusicPlaybackService? = null
     private lateinit var songViewModel: SongViewModel
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is MainActivity) {
-            musicService = context.getMusicService()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,16 +42,20 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        songViewModel = (activity as MainActivity).songViewModel
+        songViewModel = activity.songViewModel
+        val musicService = activity.getMusicService()
+
         initializeListeners()
-        if (musicService != null) {
-            musicService!!.playNewMusic(songViewModel.selectedSong)
-            musicService!!.setMusicPlaylist(songViewModel.getPlaylist())
-            initializeData()
-        }
+        /*if (musicService != null) {
+            *//*println("We're past the dark zone boys")
+            musicService.setMusicPlaylist(songViewModel.getPlaylist())*//*
+
+        }*/
+        initializeData()
     }
 
-    fun initializeListeners() {
+    private fun initializeListeners() {
+
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 binding.timeLeftText.text = progress.toString()
@@ -71,23 +70,101 @@ class PlayerFragment : Fragment() {
                 /*musicService!!.setMusicSeek(seekBar!!.progress * 1000)*/
             }
         })
+
+
+        binding.playButton.setOnClickListener {
+            val musicService = activity.getMusicService()
+
+            if (musicService != null) {
+                println("Current playlist has ${musicService.musicPlaylist.size} songs")
+
+                val isMusicPlaying = musicService.isMusicPlaying()
+                if (!isMusicPlaying) {
+                    musicService.resumeMusic()
+                } else {
+                    musicService.pauseMusic()
+                }
+            } else {
+                Toast.makeText(context, "Music Service exists not here", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.forwardButton.setOnClickListener {
+            val musicService = activity.getMusicService()
+            if (musicService != null) {
+                if (musicService.forwardMusic()) {
+                    initializeData()
+                } else {
+                    /*checkForRewindAndForward()*/
+                    Toast.makeText(context, "Hold on cowboy!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "Music Service exists not here", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.rewindButton.setOnClickListener {
+            val musicService = activity.getMusicService()
+            if (musicService != null) {
+                if (musicService.rewindMusic()) {
+                    initializeData()
+                } else {
+                    /*checkForRewindAndForward()*/
+                    Toast.makeText(context, "Hold on cowboy! Back Up", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "Music Service exists not here", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    fun initializeData() {
+    /*private fun checkForRewindAndForward() {
+        val musicService = activity.getMusicService()
+        if (musicService != null) {
+            if (musicService.hasFowardedMusic())
+        }
+    }*/
+
+
+    private fun initializeData() {
+        val musicService = activity.getMusicService()
         songJob?.cancel()
 
-        binding.songLength.text = songViewModel.selectedSong.title
-        binding.songLength.text = (musicService!!.getMusicDuration() / 1000).toString()
-        binding.seekBar.max = musicService!!.getMusicDuration() / 1000
+        if (songViewModel.checkSongInit()) {
+            binding.songTitle.text = songViewModel.selectedSong.title
+            val durationInMillis = musicService!!.getMusicDuration()
+            val durationInMinutes = TimeUnit.MILLISECONDS.toMinutes(durationInMillis.toLong())
+            val durationInSeconds =
+                TimeUnit.MILLISECONDS.toSeconds(durationInMillis.toLong()) - TimeUnit.MINUTES.toSeconds(
+                    durationInMinutes
+                )
+            binding.songLength.text = String.format("%d:%02d", durationInMinutes, durationInSeconds)
 
-        songJob = lifecycleScope.launch(Dispatchers.Main) {
-            while (true) {
-                if (isTrackSeekingAllowed) {
-                    binding.seekBar.progress = musicService!!.getMusicSeek() / 1000
-                } else {
+            binding.seekBar.max = musicService!!.getMusicDuration() / 1000
+
+            songJob = lifecycleScope.launch(Dispatchers.IO) {
+                while (isActive) {
+                    if (isTrackSeekingAllowed) {
+                        val currentSeek = musicService?.getMusicSeek()
+                        withContext(Dispatchers.Main) {
+                            binding.seekBar.progress = currentSeek?.div(1000) ?: 0
+                            binding.timeLeftText.text = currentSeek?.let { formatMillisToMinutesAndSeconds(it.toLong()) } ?: "0:00"
+                        }
+                    }
                     delay(1000)
                 }
             }
+        } else {
+            Toast.makeText(activity, "Not yet", Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun formatMillisToMinutesAndSeconds(millis: Long): String {
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes)
+        return String.format("%d:%02d", minutes, seconds)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initializeData()
     }
 }

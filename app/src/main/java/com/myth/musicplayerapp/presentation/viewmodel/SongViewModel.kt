@@ -18,8 +18,11 @@ class SongViewModel(
     val fileManager = FileManager()
     lateinit var selectedSong: Song
     var openedPlaylistName = ""
-    private var playlistAllSongs: ArrayList<Song> = ArrayList()
+    var playlistAllSongs: ArrayList<Song> = ArrayList()
 
+    fun checkSongInit(): Boolean{
+        return ::selectedSong.isInitialized
+    }
     fun clearPlaylist() {
         playlistAllSongs.clear()
     }

@@ -14,7 +14,7 @@ import java.io.File
 class MusicPlaybackService : Service() {
 
     private var musicPlayType = PlayType.Linear
-    private val musicPlaylist = ArrayList<Song>()
+    /*private*/ val musicPlaylist = ArrayList<Song>()
     private var currentMusicPlaying: Song? = null
     private var player: MediaPlayer? = null
     private var isServiceRunning = false
@@ -132,7 +132,7 @@ class MusicPlaybackService : Service() {
 
     fun setMusicPlaylist(musicPaths: ArrayList<Song>) {
         musicPlaylist.clear()
-        musicPlaylist.addAll(musicPlaylist)
+        musicPlaylist.addAll(musicPaths)
     }
 
     fun forwardMusic(): Boolean {
@@ -151,7 +151,7 @@ class MusicPlaybackService : Service() {
         return false
     }
 
-    private fun hasFowardedMusic(): Boolean {
+    fun hasFowardedMusic(): Boolean {
         if (currentMusicPlaying == null) return false
         val playlistSize = musicPlaylist.size
         if (playlistSize > 0) {
@@ -160,7 +160,7 @@ class MusicPlaybackService : Service() {
         return false
     }
 
-    private fun hasRewindedMusic(): Boolean {
+    fun hasRewindedMusic(): Boolean {
         if (currentMusicPlaying == null) return false
         val playlistSize = musicPlaylist.size
         if (playlistSize > 0) {
